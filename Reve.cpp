@@ -83,6 +83,7 @@ int CRever::StartReve(char* captured)
 		while (this->m_isStop || usetime <= this->m_timeout)
 		{
 			pcap_open_live(adapter_name, 65536, PCAP_OPENFLAG_PROMISCUOUS, 1000, m_errorBuffer);
+
 		}
 	}
 	else 
