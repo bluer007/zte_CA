@@ -4,8 +4,10 @@
 #include <Windows.h>
 #include <tchar.h>
 
-
+#include "pcap.h"
+#include <Iphlpapi.h>		//为了IP_ADAPTER_INFO结构体可以找到定义,用户获取网卡mac地址
 #include "resource.h"
+#pragma comment(lib, "Iphlpapi.lib")
 #pragma comment(lib,"wpcap.lib")
 
 //error

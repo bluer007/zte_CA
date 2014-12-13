@@ -3,19 +3,18 @@
 class CRever
 {
 public:
-	CRever(char* adapter,int time,int timeout);
+	CRever(const char* AdapterName);
 	~CRever();
 	
-	void IsStop(bool isStop);
-	int StartReve(char* captured);
+	int StartReve(const u_char** captured, int* len);
 	
 private:
-	char* adapter_description;
-	int m_time;
-	int m_timeout;
-	bool m_isStop;
+	//char* adapter_description;
+	char* adapter_name;
 
 	//根据传进来的网卡描述,返回该网卡的名字name,
 	//成功返回0	,name缓冲区不够大则失败返回表示name应该有的大小  ,其他错误返回-1
-	int FindAdapter(const char* description, char* name, int namelen);
+	//int FindAdapter(const char* description, char* name, int namelen);
+
+	int GetMAC(char* mac);		//根据adapter_description将该网卡的mac地址到mac变量里面,成功返回TRUE,失败返回FALSE
 };

@@ -64,5 +64,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="res\duilib.zip" />
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
 </Project>
