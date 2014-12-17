@@ -80,6 +80,7 @@
     <ClCompile Include="IniFile.cpp" />
     <ClCompile Include="Init.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Maker.cpp" />
     <ClCompile Include="Reve.cpp" />
     <ClCompile Include="UI.cpp" />
   </ItemGroup>
@@ -87,6 +88,8 @@
     <ClInclude Include="Filter.h" />
     <ClInclude Include="IniFile.h" />
     <ClInclude Include="Init.h" />
+    <ClInclude Include="Maker.h" />
+    <ClInclude Include="md5.h" />
     <ClInclude Include="Public.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Reve.h" />

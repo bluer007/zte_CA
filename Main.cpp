@@ -9,13 +9,13 @@
 //int APIENTRY _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmdLine, int nCmdShow)
 int main()
 {
-	//CUI *ui = new CUI();
-	//ui->InitUI();
-	//CInit *init = new CInit(ui);
-	//init->Init();
+	CUI *ui = new CUI();
+	ui->InitUI();
+	CInit *init = new CInit(ui);
+	init->Init();
 	
-	//CIniFile inifile;
-	//inifile.SetRrcord("E:\\Projects\\zte_CA\\config.ini");
+	CIniFile inifile;
+	inifile.SetRrcord("E:\\Projects\\zte_CA\\config.ini");
 
 	CRever rever("\\Device\\NPF_{A48EE8D8-20AC-498A-915B-FD02B95AE787}");		// ("Realtek PCIe GBE ÏµÁÐ¿ØÖÆÆ÷");				//("Realtek PCIe GBE Family Controller");
 	int len = 0;
@@ -36,7 +36,7 @@ int main()
 
 
 	system("pause");
-	//delete init;
-	//delete ui;
+	delete init;
+	delete ui;
 	return 0;
 }

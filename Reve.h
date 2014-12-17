@@ -7,7 +7,8 @@ public:
 	~CRever();
 	
 	int StartReve(const u_char** captured, int* len);
-	
+	static int GetMAC(char* mac);		//根据adapter_name将该网卡的mac地址到mac变量里面,成功返回TRUE,失败返回FALSE
+
 private:
 	//char* adapter_description;
 	char* adapter_name;
@@ -16,5 +17,5 @@ private:
 	//成功返回0	,name缓冲区不够大则失败返回表示name应该有的大小  ,其他错误返回-1
 	//int FindAdapter(const char* description, char* name, int namelen);
 
-	int GetMAC(char* mac);		//根据adapter_description将该网卡的mac地址到mac变量里面,成功返回TRUE,失败返回FALSE
+	
 };

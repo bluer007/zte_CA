@@ -19,7 +19,7 @@ CRever::~CRever()
 int CRever::FindAdapter(const char* description, char* name,int namelen)
 {
 	//int CRever::FindAdapter(const char* description, char* name,int namelen)
-	//根据传进来的网卡描述,返回该网卡的名字name,
+	//根据传进来的网卡描述(winpcap的描述),返回该网卡的名字name,
 	//成功返回0	,失败返回表示name应该有的大小,	-1表示其他错误
 
 	pcap_if_t *alldevs;		//网卡适配器列表

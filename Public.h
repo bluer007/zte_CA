@@ -10,16 +10,40 @@
 #pragma comment(lib, "Iphlpapi.lib")
 #pragma comment(lib,"wpcap.lib")
 
-//error
-#define		NO_WINPAP				1		//错误：寻找网卡失败,Winpap出错！请安装或者重新安装Winpap		
-#define		NO_Description			2		//警告：网卡没有一个有效的描述
-#define		NO_Adapter				3		//错误：可能没有网卡，可以试试重装Winpap
+
+enum OK_ERROR
+{
+	//error
+	NO_WINPAP				=1	,		//错误：寻找网卡失败,Winpap出错！请安装或者重新安装Winpap		
+	NO_Description				,		//警告：网卡没有一个有效的描述
+	NO_Adapter					,		//错误：可能没有网卡，可以试试重装Winpap
 
 
+	//success
+	OK_Init					=101		//初始化成功，成功加载网卡！
 
-//success
-#define		OK_Init					101		//初始化成功，成功加载网卡！
+};
 
+
+//数据包类型常量
+enum Packet_Type
+{
+	//服务器发来的包
+	UN_KNOWN			=1	,				//服务器发来的不知名包
+	REQ_ID					,				//服务器请求ID身份包
+	REQ_MD5					,				//服务器请求MD5挑战包
+	REQ_SUCCESS				,				//服务器响应SUCCESS包
+	REQ_KEY					,				//服务器请求EAPOL_KEY包
+	REQ_FAILURE				,				//服务器响应failure包,用于下线logoff包的确认,或者,密码错误等原因			
+
+	//本机发出的包
+	RES_START				,				//本机上线包
+	RES_ID					,				//本机ID身份包
+	RES_MD5					,				//本机MD5回应包
+	RES_KEY1				,				//本机续网KEY1包
+	RES_KEY2				,				//本机续网KEY2包
+	RES_LOGOFF								//本机下线包
+};
 
 
 
