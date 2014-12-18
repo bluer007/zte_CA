@@ -12,8 +12,11 @@ CRever::CRever(const char* AdapterName)
 
 CRever::~CRever()
 {
-	delete this->adapter_name;
+	if (this->adapter_name)
+		delete this->adapter_name;
 }
+
+char* CRever::adapter_name = NULL;
 
 /*
 int CRever::FindAdapter(const char* description, char* name,int namelen)
@@ -82,26 +85,20 @@ int CRever::GetMAC(char* mac)
 		//GetAdaptersInfo
 		//所得的adapter_name格式是{ 9E4EB639 - 5BA7 - 450B - AB23 - B5D959BCFD79 }
 		//adapter->description格式是		Realtek PCIe GBE 系列控制器(有中文哦)
-		if (strstr(this->adapter_name, pAdapterInfo->AdapterName) > 0)
+		if (strstr(adapter_name, pAdapterInfo->AdapterName) > 0)
 			break;
 	} while (pAdapterInfo = pAdapterInfo->Next);
 	if (ERROR_SUCCESS == dwStatus)
 	{
+		if (strlen(mac) < pAdapterInfo->AddressLength)
+			return FALSE;
+
 		_strset_s(mac, strlen(mac) + 1, '\0');
-		char temp[5] = { 0 };
 		for (int i = 0; i < (int)pAdapterInfo->AddressLength; i++)
 		{
-			if (i < (int)pAdapterInfo->AddressLength - 1)
-			{
-				sprintf_s(temp, "%02x:", pAdapterInfo->Address[i]);
-				strcat_s(mac,strlen(mac) +strlen(temp)+1 , temp);
-			}
-			else
-			{
-				sprintf_s(temp, "%02x\0", pAdapterInfo->Address[i]);
-				strcat_s(mac, strlen(mac) + strlen(temp) + 1, temp);
-			}
+			mac[i] = pAdapterInfo->Address[i];
 		}
+
 		return TRUE;
 	}
 	else
@@ -119,14 +116,15 @@ int CRever::StartReve(const u_char** captured, int* len)
 		if (!adapterHandle)
 			return FALSE;
 		
-		char mac[50] = {0};
+		char mac[8] = {0};
 		char FilterStr[80] = { 0 };			//过滤包字符串
 		struct bpf_program	mfcode;			//存放编译以后的规则
 
 		if (!this->GetMAC(mac))	
 			return FALSE;
 
-		sprintf_s(FilterStr, "(ether proto 0x0800) and (ether dst host %s)", mac);		
+		sprintf_s(FilterStr, "(ether proto 0x0800) and (ether dst host %02x:%02x:%02x:%02x:%02x:%02x)", 
+						mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
 		//只接受802.1x协议(0x888e)和目的地址是自己mac的数据包		0x0800为ip协议
 		if (pcap_compile(adapterHandle, &mfcode, FilterStr, 1, 0xffffff) == -1		//0xffffff表示子网掩码
 			|| pcap_setfilter(adapterHandle, &mfcode) == -1)

@@ -76,6 +76,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Sender.cpp" />
+    <ClCompile Include="zte_CA.cpp" />
     <ClCompile Include="Filter.cpp" />
     <ClCompile Include="IniFile.cpp" />
     <ClCompile Include="Init.cpp" />
@@ -85,12 +87,15 @@
     <ClCompile Include="UI.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Sender.h" />
+    <ClInclude Include="zte_CA.h" />
     <ClInclude Include="Filter.h" />
     <ClInclude Include="IniFile.h" />
     <ClInclude Include="Init.h" />
     <ClInclude Include="Maker.h" />
     <ClInclude Include="md5.h" />
     <ClInclude Include="Public.h" />
+    <ClInclude Include="rc4.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Reve.h" />
     <ClInclude Include="UI.h" />

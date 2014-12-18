@@ -11,7 +11,7 @@ public:
 
 private:
 	//char* adapter_description;
-	char* adapter_name;
+	static char* adapter_name;
 
 	//根据传进来的网卡描述,返回该网卡的名字name,
 	//成功返回0	,name缓冲区不够大则失败返回表示name应该有的大小  ,其他错误返回-1

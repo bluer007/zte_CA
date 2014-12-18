@@ -36,6 +36,12 @@
     <ClCompile Include="Maker.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="zte_CA.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Sender.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Init.h">
@@ -63,6 +69,15 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="md5.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="rc4.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="zte_CA.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Sender.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

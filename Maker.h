@@ -12,6 +12,7 @@ public:
 
 protected:
 	u_char* m_packet;
+	int m_packetLen;
 };
 
 
@@ -73,15 +74,6 @@ class CMake_KEY1 : public CPacket
 public:
 	CMake_KEY1(const u_char* src_packet);
 	~CMake_KEY1();
-	virtual int GetPacket(u_char** packet);
-
-};
-
-class CMake_KEY2 : public CPacket
-{
-public:
-	CMake_KEY2(const u_char* src_packet);
-	~CMake_KEY2();
 	virtual int GetPacket(u_char** packet);
 
 };

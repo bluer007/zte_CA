@@ -1,3 +1,5 @@
+#pragma once
+
 #include "Public.h"
 #include "UI.h"
 
