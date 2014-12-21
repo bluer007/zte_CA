@@ -1,5 +1,8 @@
 #pragma once
 
+
+typedef unsigned char u_char;
+
 class CRever
 {
 public:
@@ -7,7 +10,7 @@ public:
 	~CRever();
 	
 	int StartReve(const u_char** captured, int* len);
-	static int GetMAC(char* mac);		//根据adapter_name将该网卡的mac地址到mac变量里面,成功返回TRUE,失败返回FALSE
+	static int GetMAC(u_char* mac);		//根据adapter_name将该网卡的mac地址到mac变量里面,成功返回TRUE,失败返回FALSE
 
 private:
 	//char* adapter_description;

@@ -56,7 +56,8 @@ int CSender::StartSend(Packet_Type type, const u_char* captured)
 	case RES_MD5:
 	case RES_KEY1:
 	case RES_LOGOFF:
-		int isOK=FALSE;
+	{
+		int isOK = FALSE;
 		this->m_packet = this->m_maker->MakePacket(type, captured, &isOK);
 		if (!isOK)
 		{
@@ -64,6 +65,7 @@ int CSender::StartSend(Packet_Type type, const u_char* captured)
 			return FALSE;
 		}
 		break;
+	}
 	default:
 		return FALSE;
 	}

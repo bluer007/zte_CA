@@ -12,7 +12,7 @@ CFilter::~CFilter()
 
 };
 
-int CFilter::StartFilter(const u_char* captured)
+Packet_Type CFilter::StartFilter(const u_char* captured)
 {
 	enum EAP_Code
 	{					//根据802.1x协议所得

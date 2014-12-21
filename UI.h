@@ -32,10 +32,10 @@ public:
 	static bool GetAutorun(){ return false; };
 	static bool GetAutologon(){ return false; };
 	static int GetTry(){ return 3; };
-	static int Getnetcard(){ return 0; };
+	static int Getnetcard(){ return 1; };
 	static int GetLastUser(){ return 0; };
-	static char* Getusername(){ return "zjlanhdxs582834jj"; };
-	static char* GetuserPWD(){ return "12345678"; };
+	static char* Getusername(){ return "zjDSLhdjg150428"; };
+	static char* GetuserPWD(){ return "20072008"; };
 	//////////////////////////////////////////////////////////////////////////
 
 	int AddAdapter(char* description){ return 0; };		//增加网卡的列表

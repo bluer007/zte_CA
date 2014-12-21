@@ -17,10 +17,18 @@ enum OK_ERROR
 	NO_WINPAP				=1	,		//错误：寻找网卡失败,Winpap出错！请安装或者重新安装Winpap		
 	NO_Description				,		//警告：网卡没有一个有效的描述
 	NO_Adapter					,		//错误：可能没有网卡，可以试试重装Winpap
+	NO_IP						,		//错误:获取IP超时,请重新试试
 
+	NO_Selecte_Adapter			,		//提醒:请选择有效网卡 ^_^ 
+	NO_Username					,		//提醒:请输入有效账号名 ^_^
+	NO_Pwd						,		//提醒:请输入有效密码
+	NO_Online					,		//状态:掉线
 
 	//success
-	OK_Init					=101		//初始化成功，成功加载网卡！
+	OK_Init					=101,		//初始化成功，成功加载网卡！
+	OK_IP						,		//成功获取IP
+	OK_Success					,		//连网成功, 可以上网罗~~~
+	OK_Online							//状态:连网
 
 };
 

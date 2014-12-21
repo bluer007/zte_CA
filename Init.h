@@ -1,3 +1,4 @@
+/*
 #pragma once
 
 #include "Public.h"
@@ -18,4 +19,4 @@ private:
 	CUI *m_ui;
 
 	
-};
+};*/

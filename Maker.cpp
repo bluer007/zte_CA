@@ -95,7 +95,7 @@ CMake_Start::CMake_Start(const u_char* src_packet)
 	};
 	this->m_packetLen = 18;
 
-	char my_mac[8] = {0};
+	u_char my_mac[8] = {0};
 	assert(CRever::GetMAC(my_mac));
 	//赋值本机mac
 	memcpy_s(this->m_packet + 6 , 18, my_mac, 6);
@@ -148,11 +148,11 @@ CMake_ID::CMake_ID(const u_char* src_packet)
 		//复制本机mac到即将的发送包
 		memcpy_s(this->m_packet + 6, len - 6, src_packet, 6);
 		
-		char str[5] = {0};
-		sprintf_s(str, 5, "%d", namelen+5);
+		char str[1] = { namelen + 5 };
+		
 		//赋值 长度 项
-		memcpy_s(this->m_packet + 17, len, str, 5);
-		memcpy_s(this->m_packet + 21, len, str, 5);
+		memcpy_s(this->m_packet + 17, len, str, 1);
+		memcpy_s(this->m_packet + 21, len, str, 1);
 
 		//赋值 id 项
 		memcpy_s(this->m_packet + 19, len, &src_packet[19], 1);
@@ -209,11 +209,11 @@ CMake_MD5::CMake_MD5(const u_char* src_packet)
 	//复制本机mac到即将的发送包
 	memcpy_s(this->m_packet + 6, len - 6, src_packet, 6);
 
-	char str[5] = { 0 };
-	sprintf_s(str, 5, "%d", namelen + 22);
+	char str[1] = { namelen + 22 };
+	
 	//赋值 长度 项
-	memcpy_s(this->m_packet + 17, len, str, 5);
-	memcpy_s(this->m_packet + 21, len, str, 5);
+	memcpy_s(this->m_packet + 17, len, str, 1);
+	memcpy_s(this->m_packet + 21, len, str, 1);
 
 	//赋值 id 项
 	memcpy_s(this->m_packet + 19, len, &src_packet[19], 1);
@@ -232,7 +232,7 @@ CMake_MD5::CMake_MD5(const u_char* src_packet)
 	msgbuf[i++] = src_packet[19];
 
 	//以下是登陆密码
-	while (j< strlen(pwd))
+	while (j< (int)strlen(pwd))
 	{
 		msgbuf[i++] = pwd[j++];
 	}
@@ -304,8 +304,10 @@ CMake_KEY1::CMake_KEY1(const u_char* src_packet)
 	
 	u_char enckey[] = 
 	{	//海大中兴的加密因子(不同学校可能不同)
-		0x02, 0x0e, 0x05, 0x04, 0x1b, 0x0b, 0x02, 0x0a, 
-		0x06, 0x06, 0x04, 0x7d, 0x7b, 0x98, 0x17, 0xc1
+		0x02, 0x0E, 0x05, 0x04, 0x66, 0x40, 0x19, 0x75
+		, 0x06, 0x06, 0x00, 0x16, 0xD3, 0xF3, 0xAC, 0x02		//luzj加密因子
+		/*0x02, 0x0e, 0x05, 0x04, 0x18, 0x0f, 0x02, 0x0a,
+		0x06, 0x06, 0x04, 0x7d, 0x7b, 0x98, 0x17, 0xc1*/
 	};
 	u_char wholekey[20];
 	memcpy_s(wholekey, 20, src_packet + 29, 16);		//src_packet + 29表Key IV的全部16个字节
@@ -319,9 +321,29 @@ CMake_KEY1::CMake_KEY1(const u_char* src_packet)
 
 	//使用hmac_md5算法生成Key Signature，此用于包的校验
 	u_char deckey[64] = { 0 };
-	u_char encDat[64];
-	memcpy_s(encDat, 64, src_packet + 14, 64);		//src_packet + 14表从Version项开始到结束共64字节
-	hmac_md5(encDat, 64, (unsigned char*)src_packet[45], 1, deckey);		//src_packet[45]表index项
+	u_char encDat[64] = {0};
+	//enckey[0] = src_packet[45];	//++++
+	memcpy_s(encDat, 64, this->m_packet + 14, 64);		//src_packet + 14表从Version项开始到结束共64字节
+
+	printf("\n\n encDat____\n");
+	for (int i = 1; i <=64;i++)
+	{
+		if ((i % 16) == 1)
+			printf("\n");
+		printf("%02x ", encDat[i-1]);
+	}	printf("\n\n deckey-----\n");
+
+
+	hmac_md5(encDat, 64, (unsigned char*)&src_packet[45], 1, deckey);		//src_packet[45]表index项
+
+	for (int i = 1; i <= 64; i++)
+	{
+		if ((i % 16) == 1)
+			printf("\n");
+		printf("%02x ", deckey[i-1]);
+	}printf("\n\n");
+
+
 	//赋值Key Signature项 (由version开始到结束为止的包内容(Key Signature填充0)进行hmac—md5运算(密钥是index项)的结果.)
 	memcpy_s(this->m_packet + 46, len, deckey, 16);
 }
@@ -359,7 +381,7 @@ CMake_LOGOFF::CMake_LOGOFF(const u_char* src_packet)
 	};
 	this->m_packetLen = 18;
 
-	char my_mac[8] = { 0 };
+	u_char my_mac[8] = { 0 };
 	assert(CRever::GetMAC(my_mac));
 	//赋值本机mac
 	memcpy_s(this->m_packet + 6, 18, my_mac, 6);

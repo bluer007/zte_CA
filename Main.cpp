@@ -1,15 +1,17 @@
 #pragma once
+/*
 #include "Public.h"
 #include "Init.h"
 #include "UI.h"
 #include "IniFile.h"
-#include "Reve.h"
+#include "Reve.h"*/
+#include "zte_CA.h"
 
 #include <iostream>
 //int APIENTRY _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmdLine, int nCmdShow)
 int main()
 {
-	CUI *ui = new CUI();
+	/*CUI *ui = new CUI();
 	ui->InitUI();
 	CInit *init = new CInit(ui);
 	init->Init();
@@ -37,6 +39,11 @@ int main()
 
 	system("pause");
 	delete init;
-	delete ui;
+	delete ui;*/
+	Czte_CA zte_CA;
+	zte_CA.Begin();
+	zte_CA.Login();
+	zte_CA.Logoff();
+	zte_CA.End();
 	return 0;
 }

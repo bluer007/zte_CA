@@ -5,8 +5,14 @@
 
 CRever::CRever(const char* AdapterName)
 {
-	this->adapter_name = new char[strlen(AdapterName) + 1];
-	strcpy_s(this->adapter_name, strlen(AdapterName) + 1, AdapterName);
+	if (strcmp(this->adapter_name, AdapterName) != 0)
+	{
+		if (this->adapter_name)
+			delete this->adapter_name;
+		this->adapter_name = new char[strlen(AdapterName) + 1];
+		strcpy_s(this->adapter_name, strlen(AdapterName) + 1, AdapterName);
+	}
+
 
 }
 
@@ -16,7 +22,7 @@ CRever::~CRever()
 		delete this->adapter_name;
 }
 
-char* CRever::adapter_name = NULL;
+char* CRever::adapter_name = new char[1]{'\0'};
 
 /*
 int CRever::FindAdapter(const char* description, char* name,int namelen)
@@ -69,7 +75,7 @@ int CRever::FindAdapter(const char* description, char* name,int namelen)
 	return result;
 }*/
 
-int CRever::GetMAC(char* mac)
+int CRever::GetMAC(u_char* mac)
 {
 	//寻找所选的网卡的MAC
 	IP_ADAPTER_INFO AdapterInfo[16];
@@ -90,10 +96,7 @@ int CRever::GetMAC(char* mac)
 	} while (pAdapterInfo = pAdapterInfo->Next);
 	if (ERROR_SUCCESS == dwStatus)
 	{
-		if (strlen(mac) < pAdapterInfo->AddressLength)
-			return FALSE;
-
-		_strset_s(mac, strlen(mac) + 1, '\0');
+		//_strset_s(mac, strlen(mac) + 1, '\0');
 		for (int i = 0; i < (int)pAdapterInfo->AddressLength; i++)
 		{
 			mac[i] = pAdapterInfo->Address[i];
@@ -112,32 +115,36 @@ int CRever::StartReve(const u_char** captured, int* len)
 		char m_errorBuffer[PCAP_ERRBUF_SIZE];		//错误信息缓冲区
 		//1000表示超时时间为1s	,65536=65535+1表示<=65536的数据包都接受下来,而任何一个协议的数据包都小于等于65535的
 		//PCAP_OPENFLAG_PROMISCUOUS==1表示进入混杂模式   即只要局域网内的数据包都会接收下来
-		pcap_t * adapterHandle = pcap_open_live(this->adapter_name, 65536, 1, 9000, m_errorBuffer);
+		pcap_t * adapterHandle = pcap_open_live(this->adapter_name, 65536, 1, 1000, m_errorBuffer);
 		if (!adapterHandle)
 			return FALSE;
 		
-		char mac[8] = {0};
+		u_char mac[8] = {0};
 		char FilterStr[80] = { 0 };			//过滤包字符串
 		struct bpf_program	mfcode;			//存放编译以后的规则
 
 		if (!this->GetMAC(mac))	
 			return FALSE;
 
-		sprintf_s(FilterStr, "(ether proto 0x0800) and (ether dst host %02x:%02x:%02x:%02x:%02x:%02x)", 
+		sprintf_s(FilterStr, "(ether proto 0x888e) and (ether dst host %02x:%02x:%02x:%02x:%02x:%02x)", 
 						mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
-		//只接受802.1x协议(0x888e)和目的地址是自己mac的数据包		0x0800为ip协议
-		if (pcap_compile(adapterHandle, &mfcode, FilterStr, 1, 0xffffff) == -1		//0xffffff表示子网掩码
-			|| pcap_setfilter(adapterHandle, &mfcode) == -1)
+		//只接受802.1x协议(0x888e)和目的地址是自己mac的数据包		0x0800为ip协议		0x888e为802.1x
+		if (pcap_compile(adapterHandle, &mfcode, FilterStr, 1, 0xffffff) == -1	
+				|| pcap_setfilter(adapterHandle, &mfcode) == -1)		////0xffffff表示子网掩码
 			return FALSE;
 
 		pcap_pkthdr* header;		//报文头(winpcap自己加上去的)
 		int res = 0;
 
-		if ((res= pcap_next_ex(adapterHandle, &header, captured)) >= 0)
+		while (res != 1)
+		{
+			res = pcap_next_ex(adapterHandle, &header, captured);
+			//Sleep(1000);
+		};
 		{
 			*len = header->len;
 
-			if (res = 0)
+			/*if (res = 0)
 			{
 				printf("sorry");
 				
@@ -146,14 +153,14 @@ int CRever::StartReve(const u_char** captured, int* len)
 			printf("\n\n%d\n",*captured);
 			printf("\n\n开始--\n");
 			int num = 0;
-			while (num < header->len)
+			while (num < (int)header->len)
 			{
 				printf("%d-", num);
 				printf("% 02x  ", (*captured)[num++]);
-			}
+			}*/
 
 			return TRUE;
 		}
-		else
-			return FALSE;
+		/*else
+			return FALSE;*/
 }

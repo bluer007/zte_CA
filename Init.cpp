@@ -1,3 +1,4 @@
+/*
 #include "Public.h"
 #include "Init.h"
 #include "IniFile.h"
@@ -89,7 +90,7 @@ int CInit::GetAdapter()
 	int i = 0;
 	char errbuf[PCAP_ERRBUF_SIZE];		//错误信息缓冲区
 
-	/* 取得网卡列表 */
+	/ * 取得网卡列表 * /
 	if (pcap_findalldevs(&alldevs, errbuf) == -1)
 	{
 		//fprintf(stderr, "Error in pcap_findalldevs: %s\n", errbuf);
@@ -97,7 +98,7 @@ int CInit::GetAdapter()
 		return FALSE;
 	}
 
-	/* 输出列表 */
+	/ * 输出列表 * /
 	for (d = alldevs; d; d = d->next)
 	{
 		i++;
@@ -118,9 +119,9 @@ int CInit::GetAdapter()
 		return FALSE;
 	}
 
-	/* 我们不再需要列表了, 释放 */
+	/ * 我们不再需要列表了, 释放 * /
 	pcap_freealldevs(alldevs);
 
 	m_ui->OutOK(OK_Init);		//初始化成功，成功加载网卡！
 	return TRUE;
-}
+}*/

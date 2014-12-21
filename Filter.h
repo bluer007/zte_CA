@@ -5,7 +5,7 @@ class CFilter
 public:
 	CFilter();
 	~CFilter();
-	int StartFilter(const u_char* captured);
+	Packet_Type StartFilter(const u_char* captured);
 
 private:
 
